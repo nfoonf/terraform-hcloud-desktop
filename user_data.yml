@@ -1,0 +1,23 @@
+#cloud-config
+users:
+  - name: devops
+    groups: users, admin
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    passwd: '$y$j9T$gE.SfpQCKHgcndlATr8xb1$CnqXkcLSXZ1ajIeE3MRByUz9NpjcOJVIAAMv0y3Pa6.'
+    lock_passwd: false
+    shell: /bin/bash
+package_update: true
+package_upgrade: true
+packages:
+  - fail2ban
+  - ufw
+  - xfce4
+runcmd:
+  - wget https://download.nomachine.com/download/8.5/Linux/nomachine_8.5.3_1_amd64.deb
+  - sudo dpkg -i nomachine_8.5.3_1_amd64.deb
+  - sudo /etc/NX/nxserver --restart
+  - sudo ufw allow 4000
+  # we install google chrome
+  - sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo apt install -y ./google-chrome-stable_current_amd64.deb
+  - sudo reboot
